@@ -628,7 +628,20 @@ function bindBtn(sel, fn) {
 }
 function canPlay() { const g = App.game; return g && !g.over && !App.paused && App.countdown <= 0; }
 bindBtn('#btnHold', () => { if (canPlay()) App.game.doHold(); });
-bindBtn('#btnCCW', () => { if (canPlay()) App.game.rotate(-1); });
+bindBtn('#btnRot', () => { if (canPlay()) App.game.rotate(1); });
+// 십자키: 좌우는 누르고 있으면 자동 반복(DAS), 아래는 누르는 동안 소프트드롭, 위는 하드드롭
+function bindPad(sel, down, up) {
+  const el = $(sel);
+  const start = e => { e.preventDefault(); el.classList.add('on'); Sound.init(); if (canPlay()) down(); };
+  const end = e => { e.preventDefault(); if (!el.classList.contains('on')) return; el.classList.remove('on'); if (up) up(); };
+  el.addEventListener('pointerdown', start);
+  el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end); el.addEventListener('pointerleave', end);
+  el.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+}
+bindPad('#dLeft', () => { App.game.move(-1); das = { dir: -1, t: 0, arr: 0 }; }, () => { if (das.dir === -1) das.dir = 0; });
+bindPad('#dRight', () => { App.game.move(1); das = { dir: 1, t: 0, arr: 0 }; }, () => { if (das.dir === 1) das.dir = 0; });
+bindPad('#dDown', () => { App.game.softDrop = true; }, () => { if (App.game) App.game.softDrop = false; });
+bindPad('#dUp', () => App.game.hardDrop());
 bindBtn('#btnTarget', () => {
   const ks = Object.keys(TARGET_NAMES); App.targetMode = ks[(ks.indexOf(App.targetMode) + 1) % ks.length];
   store('t8target', App.targetMode); syncTargetUI(); toast('공격 타겟: ' + TARGET_NAMES[App.targetMode], 1000);
