@@ -483,7 +483,6 @@ $('#btnReady').onclick = () => { const me = App.roomInfo.players.find(p => p.id 
 $('#btnStart').onclick = () => { Sound.init(); Net.send({ t: 'start' }); };
 function syncTargetUI() {
   document.querySelectorAll('#targetModes button').forEach(b => b.classList.toggle('on', b.dataset.m === App.targetMode));
-  $('#btnTarget').textContent = '🎯 ' + TARGET_NAMES[App.targetMode];
 }
 document.querySelectorAll('#targetModes button').forEach(b => b.onclick = () => { App.targetMode = b.dataset.m; store('t8target', App.targetMode); syncTargetUI(); });
 syncTargetUI();
@@ -552,9 +551,7 @@ function startGame(seed, multi) {
   App.game = new Game(seed, { multi, id: Net.id || 0 });
   App.game.online = App.mode === 'multi';
   App.countdown = 3000;
-  $('#btnTarget').style.display = multi ? '' : 'none';
   $('#btnPause').style.display = App.mode === 'solo' ? '' : 'none';
-  $('#btnSound').textContent = settings.sound ? '🔊' : '🔇';
   show('game'); hideOverlay();
   showCountdown(3);
   lastBoardSent = 0;
@@ -642,13 +639,28 @@ bindPad('#dLeft', () => { App.game.move(-1); das = { dir: -1, t: 0, arr: 0 }; },
 bindPad('#dRight', () => { App.game.move(1); das = { dir: 1, t: 0, arr: 0 }; }, () => { if (das.dir === 1) das.dir = 0; });
 bindPad('#dDown', () => { App.game.softDrop = true; }, () => { if (App.game) App.game.softDrop = false; });
 bindPad('#dUp', () => App.game.hardDrop());
-bindBtn('#btnTarget', () => {
-  const ks = Object.keys(TARGET_NAMES); App.targetMode = ks[(ks.indexOf(App.targetMode) + 1) % ks.length];
-  store('t8target', App.targetMode); syncTargetUI(); toast('공격 타겟: ' + TARGET_NAMES[App.targetMode], 1000);
-});
-bindBtn('#btnSound', () => {
-  Sound.init(); Sound.setOn(!settings.sound); $('#btnSound').textContent = settings.sound ? '🔊' : '🔇';
-  if (settings.sound && canPlay()) Sound.startMusic();
+// 키매핑 프리셋: pad=십자키+버튼(보드 터치 없음), gesture=스와이프/탭만, mix=버튼+스와이프, lefty=왼손 혼합
+const KEYMAPS = [
+  { id: 'pad', name: '버튼', gestures: false },
+  { id: 'gesture', name: '스와이프', gestures: true },
+  { id: 'mix', name: '혼합', gestures: true },
+  { id: 'lefty', name: '왼손', gestures: true },
+];
+let keymap = KEYMAPS.find(k => k.id === store('t8keymap')) || KEYMAPS[0];
+function applyKeymap() {
+  const el = $('#game');
+  KEYMAPS.forEach(k => el.classList.remove('km-' + k.id));
+  el.classList.add('km-' + keymap.id);
+  if (keymap.id === 'lefty') el.classList.add('km-mix');
+  $('#btnKeymap small').textContent = keymap.name;
+  store('t8keymap', keymap.id);
+  if (App.screen === 'game') { resize(); requestAnimationFrame(resize); }
+}
+applyKeymap();
+bindBtn('#btnKeymap', () => {
+  keymap = KEYMAPS[(KEYMAPS.indexOf(keymap) + 1) % KEYMAPS.length];
+  applyKeymap();
+  toast('조작: ' + keymap.name + (keymap.gestures ? (keymap.id === 'gesture' ? ' (탭 회전 · 스와이프 이동/드롭)' : ' (버튼 + 스와이프)') : ' (십자키 + 버튼)'), 1500);
 });
 bindBtn('#btnPause', () => { if (App.mode === 'solo' && App.game && !App.game.over && App.countdown <= 0) togglePause(); });
 function togglePause() {
@@ -656,9 +668,10 @@ function togglePause() {
   if (App.paused) {
     Sound.stopMusic();
     const ov = $('#overlay'); ov.classList.remove('hidden');
-    ov.innerHTML = `<h2>일시정지</h2><button class="btn primary" id="ovResume">계속하기</button><button class="btn" id="ovRestart">다시 시작</button><button class="btn" id="ovQuit">메뉴로</button>`;
+    ov.innerHTML = `<h2>일시정지</h2><button class="btn primary" id="ovResume">계속하기</button><button class="btn" id="ovSound">${settings.sound ? '🔊 소리 끄기' : '🔇 소리 켜기'}</button><button class="btn" id="ovRestart">다시 시작</button><button class="btn" id="ovQuit">메뉴로</button>`;
     $('#ovResume').onclick = togglePause;
     $('#ovRestart').onclick = startSolo;
+    $('#ovSound').onclick = () => { Sound.init(); Sound.setOn(!settings.sound); $('#ovSound').textContent = settings.sound ? '🔊 소리 끄기' : '🔇 소리 켜기'; };
     $('#ovQuit').onclick = () => { App.game = null; App.paused = false; hideOverlay(); show('menu'); };
   } else { hideOverlay(); if (settings.sound) Sound.startMusic(); }
 }
@@ -676,7 +689,7 @@ function holdHit(x, y) {
 }
 mainCv.addEventListener('touchstart', e => {
   e.preventDefault(); Sound.init();
-  if (!canPlay()) return;
+  if (!canPlay() || !keymap.gestures) return;
   const t = e.changedTouches[0];
   const r = mainCv.getBoundingClientRect();
   if (holdHit(t.clientX - r.left, t.clientY - r.top)) { App.game.doHold(); return; }
@@ -733,7 +746,7 @@ mainCv.addEventListener('touchend', endTouch, { passive: false });
 mainCv.addEventListener('touchcancel', endTouch, { passive: false });
 
 // 마우스 (데스크탑 테스트용) — 클릭 회전
-mainCv.addEventListener('mousedown', e => { Sound.init(); if (canPlay()) { const r = mainCv.getBoundingClientRect(); if (holdHit(e.clientX - r.left, e.clientY - r.top)) App.game.doHold(); else App.game.rotate(1); } });
+mainCv.addEventListener('mousedown', e => { Sound.init(); if (canPlay() && keymap.gestures) { const r = mainCv.getBoundingClientRect(); if (holdHit(e.clientX - r.left, e.clientY - r.top)) App.game.doHold(); else App.game.rotate(1); } });
 
 // 키보드 (DAS/ARR)
 const keys = {}; let das = { dir: 0, t: 0 };
