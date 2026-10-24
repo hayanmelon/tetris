@@ -9,6 +9,14 @@ npm start        # http://localhost:3000
 ```
 `PORT` 환경변수로 포트 변경. 휴대폰에서 접속하려면 서버를 공개 주소(예: Render, Fly.io, Railway)에 배포하세요.
 
+## Cloudflare 배포 (Workers + Durable Objects)
+Pages가 아니라 **Workers**로 만들어야 멀티플레이 서버가 동작합니다.
+1. 대시보드 → Workers 및 Pages → 생성 → **Worker** 탭 → "리포지토리 가져오기(Import a repository)" → `tetris` 선택
+2. 빌드 명령: 비워둠 · 배포 명령: `npx wrangler deploy` (기본값)
+3. 배포 후 나오는 `https://tetris-royale-8.<계정>.workers.dev` 주소로 접속
+
+CLI: `npx wrangler login && npm run deploy`
+
 ## 조작
 | 동작 | 터치 | 키보드 |
 |---|---|---|
