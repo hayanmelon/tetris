@@ -63,18 +63,18 @@ input{user-select:text;-webkit-user-select:text;touch-action:manipulation}
 #game{padding:calc(env(safe-area-inset-top) + 4px) 0 env(safe-area-inset-bottom);gap:0}
 #opp{width:100%;flex:none;display:block}
 #main{width:100%;flex:1;min-height:0;display:block}
-.ctrl{flex:none;width:100%;height:min(170px,24vh);display:flex;align-items:center;justify-content:space-between;padding:4px 14px 8px;gap:6px}
+.ctrl{flex:none;width:100%;height:min(230px,31vh);display:flex;align-items:center;justify-content:space-between;padding:4px 14px 8px;gap:6px}
 .ctrl button{touch-action:none;border:1px solid #3a4390;background:linear-gradient(180deg,#1f2766,#141a44);box-shadow:0 4px 0 #0a0d2a,inset 0 1px 0 #ffffff22;color:#cfd6ff;font-weight:900}
 .ctrl button.on,.ctrl button:active{transform:translateY(3px);box-shadow:0 1px 0 #0a0d2a;background:#2e3577}
-.dpad{position:relative;height:100%;aspect-ratio:1;max-height:160px}
-.dk{position:absolute;width:34%;height:34%;border-radius:12px;font-size:20px}
-.dk.up{left:33%;top:0}.dk.down{left:33%;bottom:0}.dk.left{left:0;top:33%}.dk.right{right:0;top:33%}
+.dpad{position:relative;height:100%;flex:1 1 0;max-width:230px}
+.dk{position:absolute;width:36%;height:33%;border-radius:14px;font-size:26px}
+.dk.up{left:0;top:0;width:100%;height:30%;font-size:22px;letter-spacing:3px;background:linear-gradient(180deg,#ff6b8a,#d63a5c)!important;color:#fff;border-color:#ff8aa3}.dk.down{left:32%;bottom:0}.dk.left{left:0;top:34%}.dk.right{right:0;top:34%}
 .util{display:flex;flex-direction:column;gap:6px;align-items:center}
-.ub{width:64px;height:30px;border-radius:9px;font-size:11px}
-.acts{position:relative;height:100%;aspect-ratio:1;max-height:160px}
-.ab{position:absolute;border-radius:50%}
-.ab.rot{width:58%;height:58%;right:0;bottom:4%;font-size:34px;background:linear-gradient(180deg,#6b6bff,#4b3bcf)!important;color:#fff}
-.ab.hold{width:40%;height:40%;left:0;top:4%;font-size:12px}
+.ub{width:48px;height:34px;border-radius:9px;font-size:12px}
+.acts{position:relative;height:100%;flex:1 1 0;max-width:230px}
+.ab{position:absolute;border-radius:50%;aspect-ratio:1;height:auto!important}
+.ab.rot{width:min(78%,150px);right:0;bottom:2%;font-size:44px;background:linear-gradient(180deg,#6b6bff,#4b3bcf)!important;color:#fff}
+.ab.hold{width:min(52%,100px);left:0;top:0;font-size:16px}
 .overlay{position:absolute;inset:0;overflow-y:auto;background:#0b0d1fcc;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;z-index:5}
 .overlay.hidden{display:none}
 .overlay h2{font-size:38px;font-weight:900;letter-spacing:2px}
