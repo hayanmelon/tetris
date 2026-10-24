@@ -806,6 +806,11 @@ function resize() {
   const side = cell * 4.1;
   layout.holdBox = { x: layout.bx - cell * 0.6 - side - 6, y: layout.by, w: side, h: cell * 3.2 };
   layout.nextX = layout.bx + cell * COLS + 8;
+  // 조작전환·일시정지 버튼: 보드 왼쪽 스탯 아래 빈 공간
+  const sb = $('#sideBtns'), mr = mainCv.getBoundingClientRect(), gr = $('#game').getBoundingClientRect();
+  sb.style.left = (mr.left - gr.left + layout.holdBox.x) + 'px';
+  sb.style.width = side + 'px';
+  sb.style.top = (mr.top - gr.top + layout.by + cell * VIS - sb.offsetHeight) + 'px';
 }
 window.addEventListener('resize', resize);
 window.addEventListener('orientationchange', () => setTimeout(resize, 200));
