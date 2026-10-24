@@ -1,0 +1,9 @@
+{
+  "name": "Tetris Royale 8",
+  "short_name": "Tetris8",
+  "start_url": "/",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#0b0d1f",
+  "theme_color": "#0b0d1f"
+}

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d1f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="/manifest.webmanifest">
+<title>Tetris Royale 8</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div id="app">
+  <!-- 메인 메뉴 -->
+  <section id="menu" class="screen active">
+    <div class="logo">
+      <div class="logo-blocks"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i><i class="c5"></i><i class="c6"></i><i class="c7"></i></div>
+      <h1>TETRIS<span>ROYALE 8</span></h1>
+      <p class="sub">최대 8인 실시간 대전</p>
+    </div>
+    <label class="field"><span>닉네임</span><input id="nameInput" maxlength="12" placeholder="닉네임 입력" autocomplete="off"></label>
+    <div class="btns">
+      <button id="btnCreate" class="btn primary">친구와 대전 (방 만들기)</button>
+      <div class="join-row">
+        <input id="codeInput" maxlength="5" placeholder="방 코드" autocomplete="off">
+        <button id="btnJoin" class="btn">참가</button>
+      </div>
+      <button id="btnSolo" class="btn ghost">혼자 하기 (마라톤)</button>
+    </div>
+    <div class="howto">
+      <div><b>탭</b> 회전</div><div><b>← →</b> 스와이프 이동</div>
+      <div><b>↑</b> 스와이프 하드드롭</div><div><b>↓</b> 드래그 소프트드롭</div>
+    </div>
+    <div id="netStatus" class="net">서버 연결 중…</div>
+  </section>
+
+  <!-- 로비 -->
+  <section id="lobby" class="screen">
+    <div class="lobby-head">
+      <button id="btnLeave" class="icon-btn" aria-label="나가기">✕</button>
+      <div class="code-box"><span>방 코드</span><b id="roomCode">-----</b></div>
+      <div class="count"><b id="playerCount">1</b>/8</div>
+    </div>
+    <button id="btnInvite" class="btn primary invite">📨 친구 초대하기</button>
+    <ul id="playerList" class="player-list"></ul>
+    <div class="target-pick">
+      <span>공격 타겟</span>
+      <div id="targetModes" class="seg">
+        <button data-m="random" class="on">랜덤</button><button data-m="ko">KO노림</button><button data-m="attackers">반격</button><button data-m="badges">강자</button>
+      </div>
+    </div>
+    <div class="lobby-foot">
+      <button id="btnReady" class="btn">준비</button>
+      <button id="btnStart" class="btn primary">게임 시작</button>
+    </div>
+    <p id="lobbyHint" class="hint"></p>
+  </section>
+
+  <!-- 게임 -->
+  <section id="game" class="screen">
+    <canvas id="opp"></canvas>
+    <canvas id="main"></canvas>
+    <div class="game-bar">
+      <button id="btnHold" class="gbtn">HOLD</button>
+      <button id="btnCCW" class="gbtn">⟲</button>
+      <button id="btnTarget" class="gbtn small">🎯 랜덤</button>
+      <button id="btnSound" class="gbtn">🔊</button>
+      <button id="btnPause" class="gbtn">Ⅱ</button>
+    </div>
+    <div id="overlay" class="overlay hidden"></div>
+  </section>
+
+  <div id="toast" class="toast"></div>
+</div>
+<script src="/game.js"></script>
+</body>
+</html>
