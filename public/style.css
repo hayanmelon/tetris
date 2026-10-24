@@ -76,15 +76,14 @@ input{user-select:text;-webkit-user-select:text;touch-action:manipulation}
 /* 키매핑: 제스처 전용 → 작은 하단 바 */
 .km-gesture .ctrl{height:64px}
 .km-gesture .dpad{display:none}
-.km-gesture .acts{display:flex;gap:10px;height:50px;max-width:none;justify-content:center}
-.km-gesture .ab{position:static;border-radius:12px;aspect-ratio:auto;height:46px!important;width:120px!important;font-size:16px}
+.km-gesture .acts{flex-direction:row;gap:10px;height:50px;max-width:none;justify-content:center}
+.km-gesture .ab{border-radius:12px;aspect-ratio:auto;max-height:none;height:46px!important;width:120px!important;font-size:16px}
 /* 왼손: 좌우 반전 */
 .km-lefty .ctrl{flex-direction:row-reverse}
-.km-lefty .ab.rot{right:auto;left:0}.km-lefty .ab.hold{left:auto;right:0}
-.acts{position:relative;height:100%;flex:1 1 0;max-width:230px}
-.ab{position:absolute;border-radius:50%;aspect-ratio:1;height:auto!important}
-.ab.rot{width:min(66%,140px);right:0;bottom:2%;font-size:44px;background:linear-gradient(180deg,#6b6bff,#4b3bcf)!important;color:#fff}
-.ab.hold{width:min(44%,90px);left:0;top:0;font-size:16px}
+.acts{height:100%;flex:1 1 0;max-width:230px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.ab{border-radius:50%}
+.ab.hold{width:min(70%,140px);height:28%;max-height:56px;border-radius:14px;font-size:17px;flex:none}
+.ab.rot{height:min(66%,140px);aspect-ratio:1;font-size:44px;flex:none;background:linear-gradient(180deg,#6b6bff,#4b3bcf)!important;color:#fff}
 .overlay{position:absolute;inset:0;overflow-y:auto;background:#0b0d1fcc;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;z-index:5}
 .overlay.hidden{display:none}
 .overlay h2{font-size:38px;font-weight:900;letter-spacing:2px}
