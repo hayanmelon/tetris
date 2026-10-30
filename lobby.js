@@ -129,8 +129,9 @@ function connect(ws) {
         startGame(room);
         break;
       case 'board':
-        if (!room || room.state !== 'playing') return;
+        if (!room || room.state !== 'playing' || !player.alive) return;
         player.height = m.h | 0;
+        if (Number.isInteger(m.lines)) player.lines = Math.max(0, m.lines);
         broadcast(room, { t: 'board', id: player.id, b: m.b, h: m.h, g: m.g }, player);
         break;
       case 'attack': {

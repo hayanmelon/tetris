@@ -65,7 +65,7 @@ input{user-select:text;-webkit-user-select:text;touch-action:manipulation}
 #main{width:100%;flex:1;min-height:0;display:block}
 .ctrl{flex:none;width:100%;height:min(230px,31vh);display:flex;align-items:center;justify-content:space-between;padding:4px 14px 8px;gap:6px}
 .ctrl button,.util button{touch-action:none;border:1px solid #3a4390;background:linear-gradient(180deg,#1f2766,#141a44);box-shadow:0 4px 0 #0a0d2a,inset 0 1px 0 #ffffff22;color:#cfd6ff;font-weight:900}
-.ctrl button.on,.ctrl button:active,.util button:active{transform:translateY(3px);box-shadow:0 1px 0 #0a0d2a;background:#2e3577}
+.ctrl button.on,.ctrl button:active,.util button.on,.util button:active{transform:translateY(3px);box-shadow:0 1px 0 #0a0d2a,inset 0 1px 7px #ffffff30;background:#39459c;color:#fff;border-color:#9bb0ff}
 .dpad{position:relative;height:100%;flex:1 1 0;max-width:230px}
 .dk{position:absolute;width:36%;height:33%;border-radius:14px;font-size:26px}
 .dk.up{left:0;top:0;width:100%;height:30%;font-size:22px;letter-spacing:3px;background:linear-gradient(180deg,#ff6b8a,#d63a5c)!important;color:#fff;border-color:#ff8aa3}.dk.down{left:32%;bottom:0}.dk.left{left:0;top:34%}.dk.right{right:0;top:34%}
